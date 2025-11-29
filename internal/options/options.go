@@ -13,9 +13,9 @@ import (
 
 	"github.com/WuKongIM/WuKongIM/pkg/auth"
 	"github.com/WuKongIM/WuKongIM/pkg/auth/resource"
+	"github.com/WuKongIM/WuKongIM/pkg/idgen"
 	"github.com/WuKongIM/WuKongIM/pkg/wklog"
 	"github.com/WuKongIM/crypto/tls"
-	"github.com/bwmarrin/snowflake"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"github.com/sasha-s/go-deadlock"
@@ -63,9 +63,9 @@ type Options struct {
 	WSAddr            string       // websocket 监听地址 例如：ws://0.0.0.0:5200
 	WSSAddr           string       // wss 监听地址 例如：wss://0.0.0.0:5210
 	WSTLSConfig       *tls.Config
-	Stress            bool     // 是否开启压力测试
-	Violent           bool     // 狂暴模式，开启这个后将以性能为第一，稳定性第二, 压力测试模式下默认为true
-	DisableEncryption bool     // 禁用加密
+	Stress            bool // 是否开启压力测试
+	Violent           bool // 狂暴模式，开启这个后将以性能为第一，稳定性第二, 压力测试模式下默认为true
+	DisableEncryption bool // 禁用加密
 	WSSConfig         struct { // wss的证书配置
 		CertFile string // 证书文件
 		KeyFile  string // 私钥文件
@@ -81,9 +81,9 @@ type Options struct {
 	Logger struct {
 		Dir              string // 日志存储目录
 		Level            zapcore.Level
-		LineNum          bool     // 是否显示代码行数
-		TraceOn          bool     // 是否开启trace
-		TraceMaxMsgCount int      // 超过此消息数量，将不打印trace日志
+		LineNum          bool // 是否显示代码行数
+		TraceOn          bool // 是否开启trace
+		TraceMaxMsgCount int  // 超过此消息数量，将不打印trace日志
 		Loki             struct { // loki配置
 			Url      string // loki地址 例如： http://localhost:3100
 			Username string
@@ -312,7 +312,9 @@ type Options struct {
 	OldV1Api         string      //旧v1版本的api地址，如果不为空则开启数据迁移任务，将v1的数据迁移到v2
 	MigrateStartStep MigrateStep // 从那步开始迁移，默认顺序是 message,user,channel
 
-	messageIdGen *snowflake.Node // 消息ID生成器
+	//messageIdGen *snowflake.Node // 消息ID生成器
+
+	messageIdGen *idgen.TimestampAutoID
 
 	// tag相关配置
 	Tag struct {
@@ -1223,11 +1225,11 @@ func (o *Options) configureAuth() {
 		o.Auth.On = true
 	}
 
-	node, err := snowflake.NewNode(int64(o.Cluster.NodeId))
-	if err != nil {
-		wklog.Panic("create snowflake node failed", zap.Error(err))
-	}
-	o.messageIdGen = node
+	//node, err := snowflake.NewNode(int64(o.Cluster.NodeId))
+	//if err != nil {
+	//	wklog.Panic("create snowflake node failed", zap.Error(err))
+	//}
+	o.messageIdGen = idgen.NewTimestampAutoID(int64(o.Cluster.NodeId))
 
 }
 
@@ -1516,8 +1518,7 @@ func (o *Options) IsLocalNode(nodeId uint64) bool {
 
 // GenMessageId 生成messageId
 func (o *Options) GenMessageId() int64 {
-
-	return o.messageIdGen.Generate().Int64()
+	return o.messageIdGen.Next()
 }
 
 type Node struct {
