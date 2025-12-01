@@ -20,6 +20,7 @@ services:
       - xiaoniu
     volumes:
       - ./wukongimdata:/wukongimdata # 数据挂载到物理机的目录
+      - ./prod/config.yaml:/root/wukongim/wk.yaml
     ports:
       - 5001:5001 # http api 端口
 #      - 5100:5100 # tcp端口
