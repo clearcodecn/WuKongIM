@@ -37,3 +37,7 @@ deploy-latest-v2:
 
 # docker push registry.cn-shanghai.aliyuncs.com/wukongim/wukongim:v1.2
 # docker push registry.cn-shanghai.aliyuncs.com/wukongim/wukongim:v1.2-dev
+
+
+reload:
+	@docker compose stop && docker compose rm -f && docker compose up -d
