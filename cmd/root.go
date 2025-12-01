@@ -56,7 +56,7 @@ func init() {
 
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "./config/wk.yaml", "config file")
 
 	rootCmd.PersistentFlags().BoolVarP(&ignoreMissingConfig, "ignoreMissingConfig", "i", false, "Whether the configuration file can not exist. If the configuration file is configured but does not exist, it will be ignored")
 	rootCmd.PersistentFlags().StringVar(&mode, "mode", "debug", "mode")

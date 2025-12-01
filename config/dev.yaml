@@ -1,0 +1,24 @@
+# 开发环境配置
+mode: "debug"
+tokenAuthOn: false
+
+logger:
+  level: 1
+  lineNum: true
+
+auth:
+  on: true
+  kind: "jwt"
+  users:
+    - "dev:dev123:*"
+    - "test:test123:[*:r]"
+
+jwt:
+  secret: "dev-jwt-secret-for-testing-only"
+  expire: "24h"
+
+manager:
+  on: true
+
+demo:
+  on: true
