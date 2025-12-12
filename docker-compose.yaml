@@ -2,14 +2,14 @@ version: '3.7'
 services:
   wukongim: # WuKongIM服务
     image: wukongim
-    environment:
-      - "WK_CLUSTER_NODEID=1001"  
-      - "WK_CLUSTER_SERVERADDR=wukongim:11110" # 节点内部通信请求地址
-#      - "WK_TRACE_PROMETHEUSAPIURL=http://prometheus:9090" # prometheus监控地址
-      - "WK_MODE=prod" # release模式
-      - "WK_EXTERNAL_IP=192.229.115.32" # 服务器外网ip
-      - "WK_CLUSTER_APIURL=http://wukongim:5001" # api的内网地址
-#      - "WK_INTRANET_TCPADDR=wukongim:5100" # tcp连接的内网地址，此配置主要用于压测
+#    environment:
+#      - "WK_CLUSTER_NODEID=1001"
+#      - "WK_CLUSTER_SERVERADDR=wukongim:11110" # 节点内部通信请求地址
+##      - "WK_TRACE_PROMETHEUSAPIURL=http://prometheus:9090" # prometheus监控地址
+#      - "WK_MODE=prod" # release模式
+#      - "WK_EXTERNAL_IP=192.229.115.32" # 服务器外网ip
+#      - "WK_CLUSTER_APIURL=http://wukongim:5001" # api的内网地址
+##      - "WK_INTRANET_TCPADDR=wukongim:5100" # tcp连接的内网地址，此配置主要用于压测
     healthcheck:
       test: "wget -q -Y off -O /dev/null http://localhost:5001/health > /dev/null 2>&1"
       interval: 10s
@@ -19,7 +19,7 @@ services:
     networks:
       - xiaoniu
     volumes:
-      - ./wukongimdata:/wukongimdata # 数据挂载到物理机的目录
+      - /xiaoniu/wukongdata:/data # 数据挂载到物理机的目录
       - ./prod/config.yaml:/root/wukongim/wk.yaml
     ports:
       - 5001:5001 # http api 端口
