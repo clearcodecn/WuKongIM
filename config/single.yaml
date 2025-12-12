@@ -1,12 +1,12 @@
 
 ## 配置是yaml格式，请严格注意缩进.
 # 禁用加密
-disableEncryption: true
+#disableEncryption: true
 
-mode: "release" # 运行模式 模式 debug 测试 release 正式 bench 压力测试
+mode: "debug" # 运行模式 模式 debug 测试 release 正式 bench 压力测试
 addr: "tcp://0.0.0.0:5100" # tcp监听地址
 httpAddr: "0.0.0.0:5001" #  http api的监听地址  默认：0.0.0.0:5001
-rootDir: "./wukongim_data_0" # 数据存储目录
+rootDir: "./wukongim_data" # 数据存储目录
 tokenAuthOn: true # 是否开启token验证 默认为false，如果不开启任何人都可以连接到此节点，生产环境建议开启
 #managerUID: "" # 管理员UID  默认为 ____manager
 managerToken: "UserAdmin" # 管理员token 如果此字段有值，则API接口需要在请求头中添加token字段，值为此字段的值
@@ -23,7 +23,7 @@ external: # 公网配置
 #wssConfig:
 #  certFile: "" # wss证书文件路径
 #  keyFile: "" # wss证书key文件路径
-ginMode: "release" # gin框架的模式 debug 调试 release 正式 test 测试
+ginMode: "debug" # gin框架的模式 debug 调试 release 正式 test 测试
 logger:
   level: 2 # 日志级别 0:未配置,将根据mode属性判断 1:debug 2:info 3:warn 4:error
   #dir: "./logs" # 日志目录
@@ -101,10 +101,10 @@ cluster:
   #   - "1001@192.168.1.12:11110"
   #   - "1002@192.168.1.13:11110"
   #   - "1003@192.168.1.14:11110"
-  initNodes:
-    - "1001@127.0.0.1:11110"
-    - "1002@127.0.0.1:11120"
-    - "1003@127.0.0.1:11130"
+#  initNodes:
+#    - "1001@127.0.0.1:11110"
+#    - "1002@127.0.0.1:11120"
+#    - "1003@127.0.0.1:11130"
     # 集群种子节点地址 格式 nodeId@ip:port
   # 例如：
   # seed:
